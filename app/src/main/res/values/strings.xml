@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AmazonService</string>
+    <string name="s3_secret">AKIAIVP6KFXJFHWXD7HQ</string>
+    <string name="s3_access_key">QEK+FFrEvnf36si9vxj9d32kLU7clFcYOUfPhnjA</string>
+</resources>
