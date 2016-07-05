@@ -29,21 +29,20 @@ import socialinfotech.amazonservice.main.ResponseModel;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private String url = "https://n4g08yp8j9.execute-api.us-west-2.amazonaws.com/bookmix/login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mai);
         HTTPRequest httpRequest = new HTTPRequest();
-        AuthHeaderModel authHeaderModel = httpRequest.AWSGetData(url, false);
+        AuthHeaderModel authHeaderModel = httpRequest.AWSGetData(Credentials.LOGIN_URL, false);
         volly(authHeaderModel);
         retrofit(authHeaderModel);
     }
 
 
     private void volly(final AuthHeaderModel authHeaderModel) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new com.android.volley.Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Credentials.LOGIN_URL, null, new com.android.volley.Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.e("response", response + "");
@@ -63,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 //  headers.put("Content-Type", "application/json");
                 headers.put("Authorization", authHeaderModel.getAuthorization());
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                headers.put("Content-Type", Credentials.CONTENT_TYPE);
                 headers.put("X-Amz-Date", authHeaderModel.getDate());
-                headers.put("Host", "n4g08yp8j9.execute-api.us-west-2.amazonaws.com");
+                headers.put("Host", Credentials.HOST);
                 Log.e("header", headers + "");
                 return headers;
             }
@@ -86,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
                         try {
                             request.addHeader("Authorization", authHeaderModel.getAuthorization());
-                            request.addHeader("Content-Type", "application/x-www-form-urlencoded");
-                            request.addHeader("Host", "n4g08yp8j9.execute-api.us-west-2.amazonaws.com");
+                            request.addHeader("Content-Type", Credentials.CONTENT_TYPE);
+                            request.addHeader("Host", Credentials.HOST);
                             request.addHeader("X-Amz-Date", authHeaderModel.getDate());
 
                         } catch (Exception e) {
@@ -95,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     }
-                }).setEndpoint(GitHubService.API_URL).build();
+                }).setEndpoint(Credentials.HOST).build();
         GitHubService service = restAdapter.create(GitHubService.class);
         service.login("login", new Callback<ResponseModel>() {
             @Override

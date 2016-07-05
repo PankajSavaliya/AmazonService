@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import socialinfotech.amazonservice.Credentials;
 import socialinfotech.amazonservice.aws.awsauth.AWS4SignerBase;
 import socialinfotech.amazonservice.aws.awsauth.AWS4SignerForAuthorizationHeader;
 import socialinfotech.amazonservice.aws.awsauth.AuthHeaderModel;
@@ -20,10 +21,7 @@ import socialinfotech.amazonservice.aws.awsauth.AuthHeaderModel;
  * Created by pankaj on 4/07/16.
  */
 public class HTTPRequest {
-    public static final String AccessKey = "AKIAIVP6KFXJFHWXD7HQ";
-    public static final String Secret_key = "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";
-    public static final String AWS_Region = "us-west-2";
-    public static final String Service_Name = "execute-api";
+
 
     public AuthHeaderModel AWSPostData(String url, String data) {
         HttpResponse response = null;
@@ -31,7 +29,7 @@ public class HTTPRequest {
             System.out.print("-------------------------------------url-------------------------------------------------" + "\r\n");
             System.out.print(url + "\r\n");
             System.out.print("-------------------------------------url-------------------------------------------------" + "\r\n");
-            AWS4SignerForAuthorizationHeader a = new AWS4SignerForAuthorizationHeader(new URL(url), "POST", Service_Name, AWS_Region);
+            AWS4SignerForAuthorizationHeader a = new AWS4SignerForAuthorizationHeader(new URL(url), "POST", Credentials.Service_Name, Credentials.AWS_Region);
             byte[] dta = AWS4SignerBase.hash(data);
             String decoded = Hex.encodeHexString(dta);
 
@@ -39,7 +37,7 @@ public class HTTPRequest {
             Map<String, String> q = new HashMap<String, String>();
             // add headers here before computing signature
             //header.put("Content-Type","application/json");
-            AuthHeaderModel auth = a.computeSignature(header, q, decoded, AccessKey, Secret_key);
+            AuthHeaderModel auth = a.computeSignature(header, q, decoded, Credentials.AccessKey, Credentials.Secret_key);
             return auth;
         } catch (Exception ex) {
             System.out.print(ex);
@@ -55,7 +53,7 @@ public class HTTPRequest {
             System.out.print("-------------------------------------url-------------------------------------------------" + "\r\n");
             System.out.print(url + "\r\n");
             System.out.print("-------------------------------------url-------------------------------------------------" + "\r\n");
-            AWS4SignerForAuthorizationHeader a = new AWS4SignerForAuthorizationHeader(new URL(url), "GET", Service_Name, AWS_Region);
+            AWS4SignerForAuthorizationHeader a = new AWS4SignerForAuthorizationHeader(new URL(url), "GET", Credentials.Service_Name, Credentials.AWS_Region);
             byte[] dta = AWS4SignerBase.hash(data);
             String decoded = new String(Hex.encodeHex(dta));
             HttpGet httpget = new HttpGet(url);
@@ -70,7 +68,7 @@ public class HTTPRequest {
             }
             // add headers here before computing signature
             //header.put("Content-Type","application/json");
-            AuthHeaderModel auth = a.computeSignature(header, q, decoded, AccessKey, Secret_key);
+            AuthHeaderModel auth = a.computeSignature(header, q, decoded, Credentials.AccessKey, Credentials.Secret_key);
             return auth;
         } catch (Exception ex) {
             System.out.print(ex);
